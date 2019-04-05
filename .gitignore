@@ -1,0 +1,6 @@
+__pycache__
+log
+old
+tmp
+trained-models
+*.xlsx
