@@ -1,10 +1,6 @@
 # Atlas_of_Digital_Pathology
-Patch-Level Annotated Database for Histological Tissue Classification
 
-
-# Atlas_of_Digital_Pathology
-
-A Patch-level Annotated Database of Digital Pathology images for Histological Tissue Type Classification, as presented by Hosseini *et al.*'s CVPR 2019 paper "Atlas of Digital Pathology: A Generalized Hierarchical Histological Tissue Type-Annotated Database for Deep Learning".
+Patch-level Annotated Database of Digital Pathology images for Histological Tissue Type Classification, as presented by Hosseini *et al.*'s CVPR 2019 paper "Atlas of Digital Pathology: A Generalized Hierarchical Histological Tissue Type-Annotated Database for Deep Learning".
 
 ## Getting Started
 
@@ -12,78 +8,43 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-```
-Give examples
-```
+Mandatory
+* `python` (checked on 3.5)
+* `pandas` (checked on 0.23.4)
+* `keras` (checked on 2.2.4)
+* `numpy` (checked on 1.16.2)
+* `tensorflow` (checked on 1.13.1)
+
+Optional
+* `matplotlib` (checked on 3.0.2)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
 ```
-Give the example
+cd folder/to/clone-into
+git clone https://github.com/mahdihosseini/ADP.git
 ```
 
-And repeat
+## Quick Start
 
+First, download the separate ADP database to a local directory (TODO: make this scriptable).
+
+Then, open `demo_01_train.py`, then edit the value of `DATASET_DIR` to the location of that local directory.
+
+Edit the `settings.csv` file as necessary (TODO: include notes on what is permitted for each field).
+
+Next, run the demo script to train
 ```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+cd folder/to/clone-into
+python demo_01_train.py
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+(TODO: instructions on evaluating a pre-trained network)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU General Public License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* @[geifmany](https://github.com/geifmany/cifar-vgg) for his implementation of VGG16 for CIFAR, which we adapted for our VGG16 implementation
