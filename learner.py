@@ -3,11 +3,16 @@ import math
 import time
 import keras
 from keras.preprocessing.image import ImageDataGenerator
+from keras.models import model_from_json
 from keras import optimizers
+import openpyxl
+from openpyxl import load_workbook
 import numpy as np
 from clr_callback import *
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.metrics import roc_curve
+from sklearn.metrics import auc
 
 from model_loader import ModelLoader
 import htt_def
@@ -37,7 +42,7 @@ class Learner:
         elif self.dataset_type == 'ADP-Release1-Flat':
             self.csv_path = os.path.join(self.dataset_dir, 'lbl', 'ADP_EncodedLabels_Release1_Flat.csv')
             dataset_type_str = 'Release1Flat'
-        self.class_names, self.num_classes = htt_def.get_htts(self.level, self.dataset_type)
+        self.class_names, self.num_classes, self.unaugmented_class_names = htt_def.get_htts(self.level, self.dataset_type)
 
         # Tuning settings (only edit if tuning)
         self.should_run_range_test = False
@@ -55,7 +60,14 @@ class Learner:
         # Path settings (current directory)
         cur_path = os.path.abspath(os.path.curdir)
         self.log_dir = os.path.join(cur_path, 'log', self.sess_id)
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
         self.tmp_dir = os.path.join(cur_path, 'tmp')
+        if not os.path.exists(self.tmp_dir):
+            os.makedirs(self.tmp_dir)
+        self.eval_dir = os.path.join(cur_path, 'eval')
+        if not os.path.exists(self.eval_dir):
+            os.makedirs(self.eval_dir)
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
         self.model_dir = os.path.join(cur_path, 'trained-models')
@@ -109,16 +121,129 @@ class Learner:
                                                       class_mode='other',
                                                       target_size=(size[0], size[1]))
         test_generator = datagen.flow_from_dataframe(dataframe=test_df,
-                                                      directory=self.img_dir,
-                                                      x_col='Patch Names',
-                                                      y_col=self.class_names,
-                                                      batch_size=self.batch_size,
-                                                      class_mode='other',
-                                                      target_size=(size[0], size[1]))
+                                                     directory=self.img_dir,
+                                                     x_col='Patch Names',
+                                                     y_col=self.class_names,
+                                                     batch_size=self.batch_size,
+                                                     class_mode='other',
+                                                     target_size=(size[0], size[1]),
+                                                     shuffle=False)
         return train_generator, valid_generator, test_generator, train_class_counts
+
+    # Get optimal thresholds, using ROC analysis
+    def get_optimal_thresholds(self, target, predictions, thresh_rng=[1/3, 1]):
+
+        def get_opt_thresh(tprs, fprs, threshs):
+            mode = 'SensEqualsSpec'
+            if mode == 'SensEqualsSpec':
+                opt_thresh = threshs[np.argmin(abs(tprs - (1 - fprs,)))]
+            return opt_thresh
+
+        class_thresholds = []
+        class_fprs = []
+        class_tprs = []
+        for iter_class in range(predictions.shape[1]):
+            fprs, tprs, thresholds = roc_curve(target[:, iter_class], predictions[:, iter_class])
+            opt_thresh = min(max(get_opt_thresh(tprs, fprs, thresholds), thresh_rng[0]), thresh_rng[1])
+            class_thresholds.append(opt_thresh)
+            class_fprs.append(fprs)
+            class_tprs.append(tprs)
+
+        return class_thresholds, class_fprs, class_tprs
+
+    # Get thresholded class accuracies
+    def get_thresholded_metrics(self, target, predictions, thresholds):
+
+        def threshold_predictions(predictions, thresholds, class_names):
+            predictions_thresholded_simple = predictions >= thresholds
+            predictions_thresholded_hbr = np.zeros_like(predictions_thresholded_simple)
+            for iter_class in range(len(class_names)):
+                class_name = class_names[iter_class]
+                ancestor_classes = ['.'.join(class_name.split('.')[:i+1]) for i, x in enumerate(class_name.split('.')[:-1])]
+                ancestor_class_inds = [i for i, x in enumerate(class_names) if x in ancestor_classes]
+                predictions_thresholded_hbr[:, iter_class] = np.logical_and(predictions_thresholded_simple[:, iter_class],
+                    np.all(predictions_thresholded_simple[:, ancestor_class_inds], axis=1))
+            return predictions_thresholded_hbr
+
+        # Obtain thresholded predictions
+        if '+' not in self.level:
+            predictions_thresholded = predictions > thresholds
+        else:
+            predictions_thresholded = threshold_predictions(predictions, thresholds, self.class_names)
+            # Remove augmented classes and evaluate accuracy
+            unaugmented_class_inds = [i for i,x in enumerate(self.class_names) if x in self.unaugmented_class_names]
+            target = target[:, unaugmented_class_inds]
+            predictions_thresholded = predictions_thresholded[:, unaugmented_class_inds]
+
+        # Obtain metrics
+        def nan_divide(a, b):
+            y = np.array([np.nan] * len(b))
+            y[b > 0] = a[b > 0] / b[b > 0]
+            return y
+
+        cond_positive = np.sum(target == 1, 0)
+        cond_negative = np.sum(target == 0, 0)
+        true_positive = np.sum(np.logical_and(target == 1, predictions_thresholded == 1), 0)
+        false_positive = np.sum(np.logical_and(target == 0, predictions_thresholded == 1), 0)
+        true_negative = np.sum(np.logical_and(target == 0, predictions_thresholded == 0), 0)
+        false_negative = np.sum(np.logical_and(target == 1, predictions_thresholded == 0), 0)
+
+        class_tprs = nan_divide(true_positive, cond_positive)
+        class_fprs = nan_divide(false_positive, cond_negative)
+        class_tnrs = nan_divide(true_negative, cond_negative)
+        class_fnrs = nan_divide(false_negative, cond_positive)
+
+        class_accs = np.sum(target == predictions_thresholded, 0) / predictions_thresholded.shape[0]
+        class_f1s = nan_divide(2*true_positive, 2*true_positive + false_positive + false_negative)
+
+        return class_tprs, class_fprs, class_tnrs, class_fnrs, class_accs, class_f1s
+
+    def plot_rocs(self, class_fprs, class_tprs):
+        plt.figure(1)
+        plt.plot([0, 1], [0, 1], 'k--')
+        for iter_class in range(len(self.unaugmented_class_names)):
+            plt.plot(class_fprs[iter_class], class_tprs[iter_class], label=self.unaugmented_class_names[iter_class])
+        plt.xlabel('False positive rate')
+        plt.ylabel('True positive rate')
+        plt.title('ROC curve')
+        plt.legend(loc='best')
+        # plt.show()
+        plt.savefig(os.path.join(self.eval_dir, 'ROC_' + self.sess_id + '.png'), bbox_inches='tight')
+
+    def write_to_excel(self, metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s):
+        # Find mean metrics
+        not_nan_htt_inds = np.argwhere(~np.any(np.isnan(np.vstack((metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s))), axis=0))
+        mean_tpr = np.mean(metric_tprs[not_nan_htt_inds])
+        mean_fpr = np.mean(metric_fprs[not_nan_htt_inds])
+        mean_tnr = np.mean(metric_tnrs[not_nan_htt_inds])
+        mean_fnr = np.mean(metric_fnrs[not_nan_htt_inds])
+        mean_acc = np.mean(metric_accs[not_nan_htt_inds])
+        mean_f1 = np.mean(metric_f1s[not_nan_htt_inds])
+
+        df = pd.DataFrame(
+            {'HTT': self.unaugmented_class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+             'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+             'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+             'F1': list(metric_f1s) + [mean_f1]},
+            columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+
+        all_xlsx_path = os.path.join(self.eval_dir, 'metrics.xlsx')
+        if not os.path.exists(all_xlsx_path ):
+            df.to_excel(all_xlsx_path, sheet_name=self.sess_id)
+        else:
+            book = load_workbook(all_xlsx_path )
+            writer = pd.ExcelWriter(xlsx_path, engine='openpyxl')
+            writer.book = book
+            writer.sheets = dict((ws.title, ws) for ws in book.worksheets)
+            df.to_excel(writer, sheet_name=self.sess_id)
+            writer.save()
+
+        sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '.xlsx')
+        df.to_excel(sess_xlsx_path)
 
     # Train the model
     def train(self):
+        print('Starting training for ' + self.sess_id)
         # Load model
         mdl_ldr = ModelLoader(params={'model': self.model_type, 'variant': self.variant, 'num_classes': self.num_classes})
         self.model = mdl_ldr.load_model()
@@ -136,6 +261,8 @@ class Learner:
 
         # Compiling model
         print('Compiling model')
+        # def EpMpS_accuracy(y_true, y_pred):
+        #     return K.mean(K.all(K.greater_equal(y_pred[:, 0], 0.5), K.greater_equal(y_true[:, 0], 0.5)))
         opt = optimizers.SGD(lr=self.lr_initial, decay=self.lr_decay, momentum=self.momentum, nesterov=True)
         self.model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['binary_accuracy'])
 
@@ -149,8 +276,11 @@ class Learner:
         class_weights = [train_generator.n / np.array(train_class_counts)]
         if self.should_clr:
             if self.should_run_range_test:
-                clr = CyclicLR(base_lr=0.001, max_lr=0.1, step_size=3 * x_train.shape[0] // self.batch_size)
-                self.model.fit(x_train, y_train, callbacks=[clr], epochs=3, class_weight=class_weights)
+                clr = CyclicLR(base_lr=0.001, max_lr=0.1, step_size=3 * train_generator.n // self.batch_size)
+                self.model.fit_generator(generator=train_generator, steps_per_epoch=train_generator.n // self.batch_size,
+                                         epochs=3,
+                                         callbacks=[clr],
+                                         class_weight=class_weights)
                 plt.xlabel('Learning Rate')
                 plt.ylabel('Binary Accuracy')
                 plt.title("LR Range Test")
@@ -172,7 +302,7 @@ class Learner:
                                 validation_data=valid_generator,
                                 validation_steps=valid_generator.n // self.batch_size,
                                 epochs=curr_epochs,
-                                callbacks=[lr_reduce_cb, tensorboard_cb],
+                                callbacks=[clr, tensorboard_cb],
                                 verbose=2,
                                 class_weight=class_weights)
                 curr_base_lr = init_base_lr * .5 ** iter_clr_sess
@@ -192,3 +322,38 @@ class Learner:
         print('Saving model weights')
         weights_path = os.path.join(self.model_dir, self.sess_id + '.h5')
         self.model.save_weights(weights_path)
+
+    # Test the model
+    def test(self):
+        print('Starting testing for ' + self.sess_id)
+
+        # Load json and create model
+        arch_path = os.path.join(self.model_dir, self.sess_id + '.json')
+        with open(arch_path, 'r') as f:
+            loaded_model_json = f.read()
+        self.model = model_from_json(loaded_model_json)
+
+        # Load weights into new model
+        weights_path = os.path.join(self.model_dir, self.sess_id + '.h5')
+        self.model.load_weights(weights_path)
+
+        # Set up data generator
+        mdl_ldr = ModelLoader(params={'model': self.model_type, 'variant': self.variant, 'num_classes': self.num_classes})
+        self.img_dir = os.path.join(self.dataset_dir, 'img-' + str(mdl_ldr.size[0]))
+        train_generator, valid_generator, test_generator, train_class_counts = self.get_datagen(mdl_ldr.size)
+
+        # Compile and evaluate
+        opt = optimizers.SGD(lr=self.lr_initial, decay=self.lr_decay, momentum=self.momentum, nesterov=True)
+        self.model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['binary_accuracy'])
+        pred_test = self.model.predict_generator(test_generator, steps=len(test_generator))
+
+        # Get ROC analysis
+        # - Get optimal class thresholds
+        class_thresholds, class_fprs, class_tprs = self.get_optimal_thresholds(test_generator.data, pred_test)
+        # - Get thresholded class accuracies
+        metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s = self.get_thresholded_metrics(test_generator.data, pred_test, class_thresholds)
+        # - Plot ROC curves
+        self.plot_rocs(class_fprs, class_tprs)
+        # - Write metrics to Excel
+        self.write_to_excel(metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s)
+        a=1

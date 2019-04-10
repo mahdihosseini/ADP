@@ -19,6 +19,7 @@ for iter_session in range(settings_df.shape[0]):
                           'variant': session_settings[1], 'level': session_settings[2],
                           'dataset_type': session_settings[3], 'should_clr': session_settings[4]})
     lrn.train()
+    lrn.test()
     if PROCESSING_MODE == 'gpu':
         utilities.clear_model(lrn.model)
     a=1

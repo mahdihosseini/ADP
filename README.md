@@ -1,6 +1,10 @@
-# Atlas_of_Digital_Pathology
+# ADP
 
 Patch-level Annotated Database of Digital Pathology images for Histological Tissue Type Classification, as presented by Hosseini *et al.*'s CVPR 2019 paper "Atlas of Digital Pathology: A Generalized Hierarchical Histological Tissue Type-Annotated Database for Deep Learning".
+
+## Differences from CVPR Code
+* HTTs with no training examples (i.e. N.G.A, N.G.O, N.G.E, N.G.R, N.G.T) are removed, to prevent infinite class weights
+* (Optional) Log-inv-freq used instead of Inv-freq as class weights
 
 ## Getting Started
 

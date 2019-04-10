@@ -35,13 +35,13 @@ def get_htts(level, dataset_type):
 
     # Return
     if level == 'L1':
-        return htts1, len(htts1)
+        return htts1, len(htts1), htts1
     elif level == 'L2':
-        return htts2, len(htts2)
+        return htts2, len(htts2), htts2
     elif level == 'L2+':
-        return htts2p, len(htts2p)
+        return htts2p, len(htts2p), htts2
     elif level == 'L3':
-        return htts3, len(htts3)
+        return htts3, len(htts3), htts3
     elif level == 'L3+':
-        return htts3p, len(htts3p)
+        return htts3p, len(htts3p), htts3
     return htts, len(htts)

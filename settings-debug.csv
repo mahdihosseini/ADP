@@ -1,0 +1,13 @@
+Model type,Variant,Level,Dataset type,CLR
+VGG,Default,L2+,ADP-Release1,TRUE
+VGG,Default,L3,ADP-Release1,TRUE
+ResNet,Default,L1,ADP-Release1,TRUE
+ResNet,Default,L2,ADP-Release1,TRUE
+ResNet,Default,L2+,ADP-Release1,TRUE
+ResNet,Default,L3,ADP-Release1,TRUE
+ResNet,Default,L3+,ADP-Release1,TRUE
+Inception,Default,L1,ADP-Release1,TRUE
+Inception,Default,L2,ADP-Release1,TRUE
+Inception,Default,L2+,ADP-Release1,TRUE
+Inception,Default,L3,ADP-Release1,TRUE
+Inception,Default,L3+,ADP-Release1,TRUE
