@@ -15,3 +15,12 @@ Inception,Default,L2,ADP-Release1,TRUE
 Inception,Default,L2+,ADP-Release1,TRUE
 Inception,Default,L3,ADP-Release1,TRUE
 Inception,Default,L3+,ADP-Release1,TRUE
+,,,,
+VGG,Default,L3,ADP-Release1,TRUE
+VGG,Default,L3,ADP-Release1-Flat,TRUE
+VGG,Default,L2+,ADP-Release1,TRUE
+VGG,Default,L2+,ADP-Release1-Flat,TRUE
+VGG,Default,L2,ADP-Release1,TRUE
+VGG,Default,L2,ADP-Release1-Flat,TRUE
+VGG,Default,L1,ADP-Release1,TRUE
+VGG,Default,L1,ADP-Release1-Flat,TRUE

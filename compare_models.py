@@ -42,7 +42,7 @@ def get_datagen(csv_path, img_dir, splits_dir, class_names, size):
         return x
 
     # Set up data generators
-    datagen = ImageDataGenerator(
+    datagen_aug = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
         samplewise_center=False,  # set each sample mean to 0
         featurewise_std_normalization=False,  # divide inputs by std of the dataset
@@ -54,28 +54,42 @@ def get_datagen(csv_path, img_dir, splits_dir, class_names, size):
         horizontal_flip=True,  # randomly flip images
         vertical_flip=True,  # randomly flip images
         preprocessing_function=normalize)  # normalize by subtracting training set image mean, dividing by training set image std
-    train_generator = datagen.flow_from_dataframe(dataframe=train_df,
-                                                  directory=img_dir,
-                                                  x_col='Patch Names',
-                                                  y_col=class_names,
-                                                  batch_size=16,
-                                                  class_mode='other',
-                                                  target_size=(size[0], size[1]))
-    valid_generator = datagen.flow_from_dataframe(dataframe=valid_df,
-                                                  directory=img_dir,
-                                                  x_col='Patch Names',
-                                                  y_col=class_names,
-                                                  batch_size=16,
-                                                  class_mode='other',
-                                                  target_size=(size[0], size[1]))
-    test_generator = datagen.flow_from_dataframe(dataframe=test_df,
-                                                 directory=img_dir,
-                                                 x_col='Patch Names',
-                                                 y_col=class_names,
-                                                 batch_size=16,
-                                                 class_mode='other',
-                                                 target_size=(size[0], size[1]),
-                                                 shuffle=False)
+    datagen_nonaug = ImageDataGenerator(
+        featurewise_center=False,  # set input mean to 0 over the dataset
+        samplewise_center=False,  # set each sample mean to 0
+        featurewise_std_normalization=False,  # divide inputs by std of the dataset
+        samplewise_std_normalization=False,  # divide each input by its std
+        zca_whitening=False,  # apply ZCA whitening
+        rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
+        width_shift_range=0,  # randomly shift images horizontally (fraction of total width)
+        height_shift_range=0,  # randomly shift images vertically (fraction of total height)
+        horizontal_flip=False,  # randomly flip images
+        vertical_flip=False,  # randomly flip images
+        preprocessing_function=normalize)  # normalize by subtracting training set image mean, dividing by training set image std
+    train_generator = datagen_aug.flow_from_dataframe(dataframe=train_df,
+                                                      directory=img_dir,
+                                                      x_col='Patch Names',
+                                                      y_col=class_names,
+                                                      batch_size=16,
+                                                      class_mode='other',
+                                                      target_size=(size[0], size[1]),
+                                                      shuffle=True)
+    valid_generator = datagen_nonaug.flow_from_dataframe(dataframe=valid_df,
+                                                         directory=img_dir,
+                                                         x_col='Patch Names',
+                                                         y_col=class_names,
+                                                         batch_size=16,
+                                                         class_mode='other',
+                                                         target_size=(size[0], size[1]),
+                                                         shuffle=False)
+    test_generator = datagen_nonaug.flow_from_dataframe(dataframe=test_df,
+                                                        directory=img_dir,
+                                                        x_col='Patch Names',
+                                                        y_col=class_names,
+                                                        batch_size=16,
+                                                        class_mode='other',
+                                                        target_size=(size[0], size[1]),
+                                                        shuffle=False)
     return train_generator, valid_generator, test_generator, train_class_counts
 
 # Find optimal threshold
@@ -85,6 +99,49 @@ def find_thresh(tpr, fpr, thresh):
         threshold = thresh[np.argmin(abs(tpr-(1-fpr)))]
     return threshold
 
+# Get thresholded class accuracies
+def get_thresholded_metrics(target, predictions, thresholds, level, class_names, unaugmented_class_names):
+
+    def threshold_predictions(predictions, thresholds, class_names):
+        predictions_thresholded_simple = predictions >= thresholds
+        predictions_thresholded_hbr = np.zeros_like(predictions_thresholded_simple)
+        for iter_class in range(len(class_names)):
+            class_name = class_names[iter_class]
+            ancestor_classes = ['.'.join(class_name.split('.')[:i+1]) for i, x in enumerate(class_name.split('.')[:-1])]
+            ancestor_class_inds = [i for i, x in enumerate(class_names) if x in ancestor_classes]
+            predictions_thresholded_hbr[:, iter_class] = np.logical_and(predictions_thresholded_simple[:, iter_class],
+                np.all(predictions_thresholded_simple[:, ancestor_class_inds], axis=1))
+        return predictions_thresholded_hbr
+
+    # Obtain thresholded predictions
+    if '+' not in level:
+        predictions_thresholded = predictions >= thresholds
+    else:
+        predictions_thresholded = threshold_predictions(predictions, thresholds, class_names)
+        # Remove augmented classes and evaluate accuracy
+        unaugmented_class_inds = [i for i,x in enumerate(class_names) if x in unaugmented_class_names]
+        target = target[:, unaugmented_class_inds]
+        predictions_thresholded = predictions_thresholded[:, unaugmented_class_inds]
+
+    # Obtain metrics
+    cond_positive = np.sum(target == 1, 0)
+    cond_negative = np.sum(target == 0, 0)
+
+    true_positive = np.sum((target == 1) & (predictions_thresholded == 1), 0)
+    false_positive = np.sum((target == 0) & (predictions_thresholded == 1), 0)
+    true_negative = np.sum((target == 0) & (predictions_thresholded == 0), 0)
+    false_negative = np.sum((target == 1) & (predictions_thresholded == 0), 0)
+
+    class_tprs = true_positive / cond_positive
+    class_fprs = false_positive / cond_negative
+    class_tnrs = true_negative / cond_negative
+    class_fnrs = false_negative / cond_positive
+
+    class_accs = np.sum(target == predictions_thresholded, 0) / predictions_thresholded.shape[0]
+    class_f1s = (2*true_positive) / (2*true_positive + false_positive + false_negative)
+
+    return class_tprs, class_fprs, class_tnrs, class_fnrs, class_accs, class_f1s
+
 for iter_sess in range(2):
     model_type = MODELS[iter_sess]
     variant = VARIANTS[iter_sess]
@@ -93,7 +150,7 @@ for iter_sess in range(2):
     sess_type = SESS_TYPES[iter_sess]
     dataset_type = DATASET_TYPES[iter_sess]
 
-    class_names, num_classes = htt_def.get_htts(level, dataset_type)
+    class_names, num_classes, unaugmented_class_names = htt_def.get_htts(level, dataset_type)
 
     # Load json and create model
     arch_path = os.path.join(MODEL_DIR, sess_id + '.json')
@@ -115,41 +172,34 @@ for iter_sess in range(2):
     opt = optimizers.SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     # - Get ROC analysis
     model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['binary_accuracy'])
+    pred_valid = model.predict_generator(valid_generator, steps=len(valid_generator))
     pred_test = model.predict_generator(test_generator, steps=len(test_generator))
     # test_loss, test_acc = model.evaluate_generator(test_generator, steps=len(test_generator))
     if sess_type == 'old':
         all_df = pd.read_csv(csv_path)
         all_class_names = [x for x in all_df.columns[1:] if '.X' not in x]
         idx = [i for i, x in enumerate(all_class_names) if x in class_names]
+        pred_valid = pred_valid[:, np.array(idx)]
         pred_test = pred_test[:, np.array(idx)]
         class_weights = [train_generator.n / np.sum(np.float64(all_df.values[:, 1:]), axis=0)]
     elif sess_type == 'new':
         class_weights = [train_generator.n / np.array(train_class_counts)]
     print('\n'.join(class_names))
-    print(class_weights)
-    plt.figure(iter_sess+1)
-    plt.plot([0, 1], [0, 1], 'k--')
-    class_accuracies = []
-    class_thresholds = []
-    for iter_class in range(pred_test.shape[1]):
-        fpr, tpr, thresholds = roc_curve(test_generator.data[:, iter_class], pred_test[:, iter_class])
-        class_thresholds.append(find_thresh(tpr, fpr, thresholds))
-        class_thresholds[iter_class] = min(max(class_thresholds[iter_class], 1 / 3), 1)
-        class_accuracies.append(np.sum(np.equal(test_generator.data[:, iter_class],
-                                                pred_test[:, iter_class] > class_thresholds[
-                                                    iter_class])) / test_generator.n)
-        # auc_metric = auc(fpr, tpr)
-        plt.plot(fpr, tpr, label='HTT code: ' + class_names[iter_class])
-    plt.xlabel('False positive rate')
-    plt.ylabel('True positive rate')
-    plt.title('ROC curve')
-    plt.legend(loc='best')
-    plt.show()
-    print(class_accuracies)
-    print(np.mean(np.array(class_accuracies)))
 
-    # iter_test = 94
-    # print(test_generator.filenames[iter_test])
-    # print('Target: ' + ', '.join([x for i, x in enumerate(class_names) if test_generator.data[iter_test, i]]))
-    # print('Pred: ' + ', '.join([x for i, x in enumerate(class_names) if np.uint8(pred_test[iter_test, i] > class_thresholds[i])]))
+    thresh_md = 'Python'
+    if thresh_md == 'Python':
+        class_thresholds = []
+        for iter_class in range(pred_valid.shape[1]):
+            fpr, tpr, thresholds = roc_curve(valid_generator.data[:, iter_class], pred_valid[:, iter_class])
+            class_thresholds.append(find_thresh(tpr, fpr, thresholds))
+            class_thresholds[iter_class] = min(max(class_thresholds[iter_class], 1 / 3), 1)
+    elif thresh_md == 'Matlab':
+        class_thresholds = [0.5275, 0.4981, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.6568,
+                            0.3333, 0.3333, 0.3333, 0.3976, 0.3805, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.8087,
+                            0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.3333, 0.5000, 0.7766, 0.3333, 0.3333,
+                            0.3333, 0.3333, 0.5181, 0.3333, 0.3333, 0.3333, 0.5016, 0.3333, 0.9592, 0.6495, 0.6315,
+                            0.3333, 0.3333]
+
+    class_tprs, class_fprs, class_tnrs, class_fnrs, class_accs, class_f1s = get_thresholded_metrics(test_generator.data,
+                                                    pred_test, class_thresholds, level, class_names, unaugmented_class_names)
     a=1

@@ -22,7 +22,7 @@ def read_settings(path):
             ['Default']:
             assert (False), 'Incorrect variant ' + settings_df.values[iter_session, 1] + ' for Inception'
     # Check levels
-    assert (all([x in ['L1', 'L2', 'L2+', 'L3', 'L3+'] for x in settings_df.values[:, 2]])), 'Incorrect levels'
+    assert (all([x in ['L1', 'L2', 'L2+', 'L3', 'L3+', 'L3a', 'L3a+'] for x in settings_df.values[:, 2]])), 'Incorrect levels'
     # Check dataset types
     assert (all([x in ['ADP-Release1', 'ADP-Release1-Flat'] for x in settings_df.values[:, 3]])), 'Incorrect dataset types'
     # Check CLRs
