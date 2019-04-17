@@ -37,15 +37,14 @@ class Learner:
 
         # Level-specific settings
         if self.dataset_type == 'ADP-Release1':
-            # self.csv_path = os.path.join(self.dataset_dir, 'lbl', 'ADP_EncodedLabels_Release1.csv')
-            self.csv_path = os.path.join(self.dataset_dir, 'lbl', 'ADP_ListLabelsCategorical_Release1.csv')
+            self.csv_path = os.path.join(self.dataset_dir, 'lbl', 'ADP_EncodedLabels_Release1.csv')
             dataset_type_str = 'Release1'
         elif self.dataset_type == 'ADP-Release1-Flat':
             self.csv_path = os.path.join(self.dataset_dir, 'lbl', 'ADP_EncodedLabels_Release1_Flat.csv')
             dataset_type_str = 'Release1Flat'
         self.class_names, self.num_classes, self.unaugmented_class_names = htt_def.get_htts(self.level, self.dataset_type)
-        self.class_names.sort()
-        self.unaugmented_class_names.sort()
+        # self.class_names.sort()
+        # self.unaugmented_class_names.sort()
 
         # Tuning settings (only edit if tuning)
         self.should_run_range_test = False
@@ -84,88 +83,6 @@ class Learner:
 
     # Get data generators
     def get_datagen(self, size):
-        all_df = pd.read_csv(self.csv_path)
-        all_df['Labels'] = all_df['Labels'].apply(lambda x: x.split(';'))
-
-        # Read splits
-        train_inds = np.load(os.path.join(self.splits_dir, 'train.npy'))
-        valid_inds = np.load(os.path.join(self.splits_dir, 'valid.npy'))
-        test_inds = np.load(os.path.join(self.splits_dir, 'test.npy'))
-        # Split dataframe
-        train_df = all_df.loc[train_inds, :]
-        valid_df = all_df.loc[valid_inds, :]
-        test_df = all_df.loc[test_inds, :]
-        # Get train class counts
-        # train_class_counts = [x for i, x in enumerate(np.sum(train_df.values[:, 1:], axis=0)) if train_df.columns[i+1] in self.class_names]
-        # train_class_counts = [x for i, x in enumerate(np.sum(train_df.values[:, 1:], axis=0))]
-
-        # Set up data generators
-        datagen_aug = ImageDataGenerator(
-                    featurewise_center=False,  # set input mean to 0 over the dataset
-                    samplewise_center=False,  # set each sample mean to 0
-                    featurewise_std_normalization=False,  # divide inputs by std of the dataset
-                    samplewise_std_normalization=False,  # divide each input by its std
-                    zca_whitening=False,  # apply ZCA whitening
-                    rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
-                    width_shift_range=0,  # randomly shift images horizontally (fraction of total width)
-                    height_shift_range=0,  # randomly shift images vertically (fraction of total height)
-                    horizontal_flip=True,  # randomly flip images
-                    vertical_flip=True,  # randomly flip images
-                    preprocessing_function=self.normalize)   # normalize by subtracting training set image mean, dividing by training set image std
-        datagen_nonaug = ImageDataGenerator(
-                    featurewise_center=False,  # set input mean to 0 over the dataset
-                    samplewise_center=False,  # set each sample mean to 0
-                    featurewise_std_normalization=False,  # divide inputs by std of the dataset
-                    samplewise_std_normalization=False,  # divide each input by its std
-                    zca_whitening=False,  # apply ZCA whitening
-                    rotation_range=0,  # randomly rotate images in the range (degrees, 0 to 180)
-                    width_shift_range=0,  # randomly shift images horizontally (fraction of total width)
-                    height_shift_range=0,  # randomly shift images vertically (fraction of total height)
-                    horizontal_flip=False,  # randomly flip images
-                    vertical_flip=False,  # randomly flip images
-                    preprocessing_function=self.normalize)  # normalize by subtracting training set image mean, dividing by training set image std
-        train_generator = datagen_aug.flow_from_dataframe(dataframe=train_df,
-                                                      directory=self.img_dir,
-                                                      x_col='Patch Names',
-                                                      y_col='Labels',
-                                                      batch_size=self.batch_size,
-                                                      class_mode='categorical',
-                                                      target_size=(size[0], size[1]),
-                                                      shuffle=True)
-        valid_generator = datagen_nonaug.flow_from_dataframe(dataframe=valid_df,
-                                                      directory=self.img_dir,
-                                                      x_col='Patch Names',
-                                                      y_col='Labels',
-                                                      batch_size=self.batch_size,
-                                                      class_mode='categorical',
-                                                      target_size=(size[0], size[1]),
-                                                      shuffle=False)
-        test_generator = datagen_nonaug.flow_from_dataframe(dataframe=test_df,
-                                                     directory=self.img_dir,
-                                                     x_col='Patch Names',
-                                                     y_col='Labels',
-                                                     batch_size=self.batch_size,
-                                                     class_mode='categorical',
-                                                     target_size=(size[0], size[1]),
-                                                     shuffle=False)
-        valid_generator.class_indices = train_generator.class_indices
-        # for iter_img in range(valid_generator.n):
-        #     for iter_class in range(len(valid_generator.labels[iter_img])):
-        #         if valid_generator.labels[iter_img][iter_class] >= 1:
-        #             valid_generator.labels[iter_img][iter_class] += 1
-        test_generator.class_indices = train_generator.class_indices
-        # for iter_img in range(test_generator.n):
-        #     for iter_class in range(len(test_generator.labels[iter_img])):
-        #         if test_generator.labels[iter_img][iter_class] >= 11 and test_generator.labels[iter_img][iter_class] < 40:
-        #             test_generator.labels[iter_img][iter_class] += 1
-        #         elif test_generator.labels[iter_img][iter_class] >= 40:
-        #             test_generator.labels[iter_img][iter_class] += 2
-        flat_list = [item for sublist in train_generator.labels for item in sublist]
-        train_class_counts = [flat_list.count(i) for i, x in enumerate(train_generator.class_indices)]
-        return train_generator, valid_generator, test_generator, train_class_counts
-
-    # Get data generators
-    def get_datagen_old(self, size):
         all_df = pd.read_csv(self.csv_path)
         # Read splits
         train_inds = np.load(os.path.join(self.splits_dir, 'train.npy'))
@@ -276,9 +193,9 @@ class Learner:
         else:
             predictions_thresholded = threshold_predictions(predictions, thresholds, self.class_names)
             # Remove augmented classes and evaluate accuracy
-            unaugmented_class_inds = [i for i,x in enumerate(self.class_names) if x in self.unaugmented_class_names]
-            target = target[:, unaugmented_class_inds]
-            predictions_thresholded = predictions_thresholded[:, unaugmented_class_inds]
+            # unaugmented_class_inds = [i for i,x in enumerate(self.class_names) if x in self.unaugmented_class_names]
+            # target = target[:, unaugmented_class_inds]
+            # predictions_thresholded = predictions_thresholded[:, unaugmented_class_inds]
 
         # Obtain metrics
         cond_positive = np.sum(target == 1, 0)
@@ -312,35 +229,59 @@ class Learner:
         plt.savefig(os.path.join(self.eval_dir, 'ROC_' + self.sess_id + '.png'), bbox_inches='tight')
 
     def write_to_excel(self, metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s):
-        # Find mean metrics
-        not_nan_htt_inds = np.argwhere(~np.any(np.isnan(np.vstack((metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s))), axis=0))
-        mean_tpr = np.mean(metric_tprs[not_nan_htt_inds])
-        mean_fpr = np.mean(metric_fprs[not_nan_htt_inds])
-        mean_tnr = np.mean(metric_tnrs[not_nan_htt_inds])
-        mean_fnr = np.mean(metric_fnrs[not_nan_htt_inds])
-        mean_acc = np.mean(metric_accs[not_nan_htt_inds])
-        mean_f1 = np.mean(metric_f1s[not_nan_htt_inds])
+        def find_means(tpr, fpr, tnr, fnr, acc, f1):
+            # Find mean metrics
+            not_nan_htt_inds = np.argwhere(~np.any(np.isnan(np.vstack((tpr, fpr, tnr, fnr, acc, f1))), axis=0))
+            mean_tpr = np.mean(tpr[not_nan_htt_inds])
+            mean_fpr = np.mean(fpr[not_nan_htt_inds])
+            mean_tnr = np.mean(tnr[not_nan_htt_inds])
+            mean_fnr = np.mean(fnr[not_nan_htt_inds])
+            mean_acc = np.mean(acc[not_nan_htt_inds])
+            mean_f1 = np.mean(f1[not_nan_htt_inds])
 
-        df = pd.DataFrame(
-            {'HTT': self.unaugmented_class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
-             'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
-             'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
-             'F1': list(metric_f1s) + [mean_f1]},
-            columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+            return mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1
+        # Start a new Excel
+        sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '_all.xlsx')
 
-        all_xlsx_path = os.path.join(self.eval_dir, 'metrics.xlsx')
-        if not os.path.exists(all_xlsx_path ):
-            df.to_excel(all_xlsx_path, sheet_name=self.sess_id)
-        else:
-            book = load_workbook(all_xlsx_path)
-            writer = pd.ExcelWriter(all_xlsx_path, engine='openpyxl')
-            writer.book = book
-            writer.sheets = dict((ws.title, ws) for ws in book.worksheets)
-            df.to_excel(writer, sheet_name=self.sess_id)
-            writer.save()
-
-        sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '.xlsx')
+        # All classes (Augmented + Unaugmented)
+        mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                               metric_fnrs, metric_accs, metric_f1s)
+        df = pd.DataFrame({'HTT': self.class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                           'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                           'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                           'F1': list(metric_f1s) + [mean_f1]}, columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
         df.to_excel(sess_xlsx_path)
+
+        # Unaugmented classes
+        sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '_unaugmented.xlsx')
+        unaugmented_class_inds = [i for i, x in enumerate(self.class_names) if x in self.unaugmented_class_names]
+        metric_tprs = metric_tprs[unaugmented_class_inds]
+        metric_fprs = metric_fprs[unaugmented_class_inds]
+        metric_tnrs = metric_tnrs[unaugmented_class_inds]
+        metric_fnrs = metric_fnrs[unaugmented_class_inds]
+        metric_accs = metric_accs[unaugmented_class_inds]
+        metric_f1s = metric_f1s[unaugmented_class_inds]
+        mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                               metric_fnrs, metric_accs, metric_f1s)
+        df = pd.DataFrame({'HTT': self.unaugmented_class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                           'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                           'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                           'F1': list(metric_f1s) + [mean_f1]},
+                          columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+        df.to_excel(sess_xlsx_path)
+        a=1
+
+
+        # all_xlsx_path = os.path.join(self.eval_dir, 'metrics.xlsx')
+        # if not os.path.exists(all_xlsx_path ):
+        #     df.to_excel(all_xlsx_path, sheet_name=self.sess_id)
+        # else:
+        #     book = load_workbook(all_xlsx_path)
+        #     writer = pd.ExcelWriter(all_xlsx_path, engine='openpyxl')
+        #     writer.book = book
+        #     writer.sheets = dict((ws.title, ws) for ws in book.worksheets)
+        #     df.to_excel(writer, sheet_name=self.sess_id)
+        #     writer.save()
 
     # Train the model
     def train(self):
@@ -442,47 +383,26 @@ class Learner:
         mdl_ldr = ModelLoader(params={'model': self.model_type, 'variant': self.variant, 'num_classes': self.num_classes})
         self.img_dir = os.path.join(self.dataset_dir, 'img-' + str(mdl_ldr.size[0]))
         train_generator, valid_generator, test_generator, train_class_counts = self.get_datagen(mdl_ldr.size)
-        valid_data = np.zeros((valid_generator.n, self.num_classes))
-        for iter_img in range(valid_generator.n):
-            curr_htts = np.array(valid_generator.labels[iter_img])
-            curr_htts[curr_htts >= 1] += 1
-            valid_data[iter_img, curr_htts] = 1
-        test_data = np.zeros((test_generator.n, self.num_classes))
-        for iter_img in range(test_generator.n):
-            curr_htts = np.array(test_generator.labels[iter_img])
-            curr_htts[curr_htts >= 32] += 1
-            curr_htts[curr_htts >= 39] += 1
-            test_data[iter_img, curr_htts] = 1
 
         # Compile and evaluate
         opt = optimizers.SGD(lr=self.lr_initial, decay=self.lr_decay, momentum=self.momentum, nesterov=True)
         self.model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['binary_accuracy'])
         train_generator.shuffle = False
-        # pred_train = self.model.predict_generator(train_generator, steps=len(train_generator))
         pred_valid = self.model.predict_generator(valid_generator, steps=len(valid_generator))
-        # for iter_img in range(valid_generator.n):
-        #     curr_htts = np.array(valid_generator.labels[iter_img])
-        #     curr_htts[curr_htts >= 0] += 1
-        #     pred_valid[iter_img, curr_htts] = 1
         pred_test = self.model.predict_generator(test_generator, steps=len(test_generator))
-        # for iter_img in range(test_generator.n):
-        #     curr_htts = np.array(test_generator.labels[iter_img])
-        #     curr_htts[curr_htts >= 10] += 1
-        #     curr_htts[curr_htts >= 39] += 1
-        #     pred_test[iter_img, curr_htts] = 1
 
-        plt.figure(1)
-        plt.plot(np.sum(test_data, axis=0))
-        plt.plot(np.sum(pred_test, axis=0))
-        plt.show()
+        # plt.figure(1)
+        # plt.plot(np.sum(test_data, axis=0))
+        # plt.plot(np.sum(pred_test, axis=0))
+        # plt.show()
 
         # Get ROC analysis
         # - Get optimal class thresholds
-        class_thresholds, _, _ = self.get_optimal_thresholds(valid_data, pred_valid)
+        class_thresholds, _, _ = self.get_optimal_thresholds(valid_generator.data, pred_valid)
         # - Get thresholded class accuracies
-        metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s = self.get_thresholded_metrics(test_data, pred_test, class_thresholds)
+        metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s = self.get_thresholded_metrics(test_generator.data, pred_test, class_thresholds)
         # - Plot ROC curves
-        _, class_fprs, class_tprs = self.get_optimal_thresholds(test_data, pred_test)
+        _, class_fprs, class_tprs = self.get_optimal_thresholds(test_generator.data, pred_test)
         self.plot_rocs(class_fprs, class_tprs)
         # - Write metrics to Excel
         self.write_to_excel(metric_tprs, metric_fprs, metric_tnrs, metric_fnrs, metric_accs, metric_f1s)

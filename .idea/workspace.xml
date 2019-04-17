@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eca2ca44-f78a-48ef-9b05-dde39ddf1611" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/predict_patch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compare_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/compare_models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo_01_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo_01_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/htt_def.py" beforeDir="false" afterPath="$PROJECT_DIR$/htt_def.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learner.py" beforeDir="false" afterPath="$PROJECT_DIR$/learner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings-old.csv" beforeDir="false" afterPath="$PROJECT_DIR$/settings-old.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.csv" beforeDir="false" afterPath="$PROJECT_DIR$/settings.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,12 +14,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo_01_train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
+            <state relative-caret-position="340">
+              <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -32,20 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/learner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="485" column="27" selection-start-line="485" selection-start-column="27" selection-end-line="485" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/User_Program_Files/Python35/Lib/zipfile.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="1013" selection-start-line="1013" selection-end-line="1013" />
+            <state relative-caret-position="340">
+              <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -53,7 +39,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python35/site-packages/keras_preprocessing/image/dataframe_iterator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
+            <state relative-caret-position="4284">
               <caret line="260" selection-start-line="260" selection-end-line="260" />
             </state>
           </provider>
@@ -62,7 +48,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://C:/User_Program_Files/Python35/Lib/site-packages/keras/engine/training_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="2159">
               <caret line="137" selection-start-line="137" selection-end-line="137" />
             </state>
           </provider>
@@ -71,8 +57,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/htt_def.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="22" column="45" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
+            <state relative-caret-position="493">
+              <caret line="30" column="105" selection-start-line="30" selection-start-column="105" selection-end-line="30" selection-end-column="105" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../Grad Research/hsn_v1/hsn_v1/hsn_v1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7276">
+              <caret line="433" column="65" selection-start-line="433" selection-start-column="65" selection-end-line="433" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -80,38 +75,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare_models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
+            <state relative-caret-position="3264">
               <caret line="202" column="114" selection-start-line="202" selection-start-column="100" selection-end-line="202" selection-end-column="114" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/predict_patch.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="942">
-              <caret line="89" column="56" selection-start-line="89" selection-start-column="42" selection-end-line="89" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../Grad Research/python codes/train_histonet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="135" column="38" selection-start-line="135" selection-start-column="38" selection-end-line="135" selection-end-column="38" />
+            <state relative-caret-position="2193">
+              <caret line="153" column="25" selection-start-line="154" selection-start-column="24" selection-end-line="154" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utilities.py">
+        <entry file="file://$PROJECT_DIR$/../../Grad Research/python codes/atlas_loader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
+            <state relative-caret-position="782">
+              <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -133,7 +116,6 @@
       <find>rescale</find>
       <find>self.</find>
       <find>train_generator</find>
-      <find>shuffle</find>
       <find>lr_scheduler</find>
       <find>dataframe</find>
       <find>SESS_IDS</find>
@@ -142,7 +124,10 @@
       <find>pred_train</find>
       <find>get_optimal_thresholds</find>
       <find>find_thresh</find>
+      <find>shuffle</find>
       <find>.data</find>
+      <find>write_to_excel</find>
+      <find>unaugmented</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -155,27 +140,25 @@
         <option value="$PROJECT_DIR$/compare_models.py" />
         <option value="$PROJECT_DIR$/htt_def.py" />
         <option value="$PROJECT_DIR$/utilities.py" />
-        <option value="$PROJECT_DIR$/demo_01_train.py" />
         <option value="$PROJECT_DIR$/learner.py" />
+        <option value="$PROJECT_DIR$/demo_01_train.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1072" />
     <option name="y" value="-8" />
-    <option name="width" value="1296" />
-    <option name="height" value="1000" />
+    <option name="width" value="1096" />
+    <option name="height" value="1896" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Grad Research/WSSS-HTT-Benchmark" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
@@ -277,23 +260,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="1072" y="-8" width="1096" height="1896" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.24952741" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.44549125" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.18774816" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -312,64 +295,145 @@
           <line>109</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learner.py</url>
-          <line>488</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
-        <expression-string>train_class_counts</expression-string>
+        <expression-string>df.to_excel(sess_xlsx_path)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>plt.figure(1)
-plt.plot(np.sum(valid_data, axis=0))
-plt.plot(np.sum(pred_valid, axis=0))
-plt.show()</expression-string>
+        <expression-string>sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '_unaugmented.xlsx')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>plt.figure(1)
-plt.plot(np.sum(test_data, axis=0))
-plt.plot(np.sum(pred_test, axis=0))
-plt.show()</expression-string>
+        <expression-string>writer.save()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[i for i,x in enumerate(self.class_names) if x not in test_generator.class_indices]</expression-string>
+        <expression-string># Start a new Excel
+sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '.xlsx')
+book = load_workbook(sess_xlsx_path)
+writer = pd.ExcelWriter(sess_xlsx_path, engine='openpyxl')
+writer.book = book
+writer.sheets = dict((ws.title, ws) for ws in book.worksheets)
+# All classes (Augmented + Unaugmented)
+mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                       metric_fnrs, metric_accs, metric_f1s)
+df = pd.DataFrame({'HTT': self.class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]}, columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+df.to_excel(sess_xlsx_path, sheet_name='all')
+# Unaugmented classes
+unaugmented_class_inds = [i for i, x in enumerate(self.class_names) if x in self.unaugmented_class_names]
+metric_tprs = metric_tprs[unaugmented_class_inds]
+metric_fprs = metric_fprs[unaugmented_class_inds]
+metric_tnrs = metric_tnrs[unaugmented_class_inds]
+metric_fnrs = metric_fnrs[unaugmented_class_inds]
+metric_accs = metric_accs[unaugmented_class_inds]
+metric_f1s = metric_f1s[unaugmented_class_inds]
+mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                       metric_fnrs, metric_accs, metric_f1s)
+df = pd.DataFrame({'HTT': self.unaugmented_class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]},
+                  columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+df.to_excel(sess_xlsx_path, sheet_name='unaugmented')
+writer.save()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[i for i,x in enumerate(self.class_names) if x not in valid_generator.class_indices]</expression-string>
+        <expression-string>df.to_excel(sess_xlsx_path, sheet_name='unaugmented')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[i for i,x in enumerate((train_generator.class_indices).sort()) if x not in valid_generator.class_indices]</expression-string>
+        <expression-string>df = pd.DataFrame({'HTT': self.unaugmented_class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]},
+                  columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>[i for i,x in enumerate(list(train_generator.class_indices).sort()) if x not in valid_generator.class_indices]</expression-string>
+        <expression-string># Unaugmented classes
+unaugmented_class_inds = [i for i, x in enumerate(self.class_names) if x in self.unaugmented_class_names]
+metric_tprs = metric_tprs[unaugmented_class_inds]
+metric_fprs = metric_fprs[unaugmented_class_inds]
+metric_tnrs = metric_tnrs[unaugmented_class_inds]
+metric_fnrs = metric_fnrs[unaugmented_class_inds]
+metric_accs = metric_accs[unaugmented_class_inds]
+metric_f1s = metric_f1s[unaugmented_class_inds]
+mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                       metric_fnrs, metric_accs, metric_f1s)
+df = pd.DataFrame({'HTT': self.class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]},
+                  columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+df.to_excel(sess_xlsx_path, sheet_name='unaugmented')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>train_generator.class_indices</expression-string>
+        <expression-string>sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '.xlsx')
+# All classes (Augmented + Unaugmented)
+mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                       metric_fnrs, metric_accs, metric_f1s)
+df = pd.DataFrame({'HTT': self.class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]}, columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+df.to_excel(sess_xlsx_path, sheet_name='all')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>train_generator.class_indices[26]</expression-string>
+        <expression-string>def find_means(tpr, fpr, tnr, fnr, acc, f1):
+    # Find mean metrics
+    not_nan_htt_inds = np.argwhere(~np.any(np.isnan(np.vstack((tpr, fpr, tnr, fnr, acc, f1))), axis=0))
+    mean_tpr = np.mean(tpr[not_nan_htt_inds])
+    mean_fpr = np.mean(fpr[not_nan_htt_inds])
+    mean_tnr = np.mean(tnr[not_nan_htt_inds])
+    mean_fnr = np.mean(fnr[not_nan_htt_inds])
+    mean_acc = np.mean(acc[not_nan_htt_inds])
+    mean_f1 = np.mean(f1[not_nan_htt_inds])
+    return mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1
+sess_xlsx_path = os.path.join(self.eval_dir, 'metrics_' + self.sess_id + '.xlsx')
+# All classes (Augmented + Unaugmented)
+mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                       metric_fnrs, metric_accs, metric_f1s)
+df = pd.DataFrame({'HTT': self.class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]}, columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+df.to_excel(sess_xlsx_path, sheet_name='all')
+
+# Unaugmented classes
+unaugmented_class_inds = [i for i, x in enumerate(self.class_names) if x in self.unaugmented_class_names]
+metric_tprs = metric_tprs[unaugmented_class_inds]
+metric_fprs = metric_fprs[unaugmented_class_inds]
+metric_tnrs = metric_tnrs[unaugmented_class_inds]
+metric_fnrs = metric_fnrs[unaugmented_class_inds]
+metric_accs = metric_accs[unaugmented_class_inds]
+metric_f1s = metric_f1s[unaugmented_class_inds]
+mean_tpr, mean_fpr, mean_tnr, mean_fnr, mean_acc, mean_f1 = find_means(metric_tprs, metric_fprs, metric_tnrs,
+                                                                       metric_fnrs, metric_accs, metric_f1s)
+df = pd.DataFrame({'HTT': self.class_names + ['Average'], 'TPR': list(metric_tprs) + [mean_tpr],
+                   'FPR': list(metric_fprs) + [mean_fpr], 'TNR': list(metric_tnrs) + [mean_tnr],
+                   'FNR': list(metric_fnrs) + [mean_fnr], 'ACC': list(metric_accs) + [mean_acc],
+                   'F1': list(metric_f1s) + [mean_f1]},
+                  columns=['HTT', 'TPR', 'FPR', 'TNR', 'FNR', 'ACC', 'F1'])
+df.to_excel(sess_xlsx_path, sheet_name='unaugmented')</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
@@ -433,24 +497,17 @@ plt.show()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/htt_def.py">
+    <entry file="file://C:/User_Program_Files/Python35/Lib/zipfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="22" column="45" selection-start-line="22" selection-start-column="45" selection-end-line="22" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/User_Program_Files/Python35/Lib/site-packages/keras/engine/training_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="137" selection-start-line="137" selection-end-line="137" />
+        <state relative-caret-position="162">
+          <caret line="1013" selection-start-line="1013" selection-end-line="1013" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/demo_01_train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
+        <state relative-caret-position="340">
+          <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
@@ -459,36 +516,57 @@ plt.show()</expression-string>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python35/site-packages/keras_preprocessing/image/dataframe_iterator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
+        <state relative-caret-position="4284">
           <caret line="260" selection-start-line="260" selection-end-line="260" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/User_Program_Files/Python35/Lib/site-packages/keras/engine/training_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2159">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htt_def.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="30" column="105" selection-start-line="30" selection-start-column="105" selection-end-line="30" selection-end-column="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Grad Research/hsn_v1/hsn_v1/hsn_v1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7276">
+          <caret line="433" column="65" selection-start-line="433" selection-start-column="65" selection-end-line="433" selection-end-column="65" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
+        <state relative-caret-position="3264">
           <caret line="202" column="114" selection-start-line="202" selection-start-column="100" selection-end-line="202" selection-end-column="114" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/User_Program_Files/Python35/Lib/zipfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="1013" selection-start-line="1013" selection-end-line="1013" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/learner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="485" column="27" selection-start-line="485" selection-start-column="27" selection-end-line="485" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Grad Research/python codes/train_histonet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="135" column="38" selection-start-line="135" selection-start-column="38" selection-end-line="135" selection-end-column="38" />
+        <state relative-caret-position="2193">
+          <caret line="153" column="25" selection-start-line="154" selection-start-column="24" selection-end-line="154" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Grad Research/python codes/atlas_loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
         </state>
       </provider>
     </entry>
