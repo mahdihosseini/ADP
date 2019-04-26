@@ -1,6 +1,6 @@
 # ADP
 
-Patch-level Annotated Database of Digital Pathology images for Histological Tissue Type Classification, as presented by Hosseini *et al.*'s CVPR 2019 paper "Atlas of Digital Pathology: A Generalized Hierarchical Histological Tissue Type-Annotated Database for Deep Learning".
+Patch-level Annotated Database of Digital Pathology images for Histological Tissue Type (HTT) Classification, as presented by Hosseini *et al.*'s CVPR 2019 paper "Atlas of Digital Pathology: A Generalized Hierarchical Histological Tissue Type-Annotated Database for Deep Learning".
 
 ## Differences from CVPR Code
 * HTTs with no training examples (i.e. N.G.A, N.G.O, N.G.E, N.G.R, N.G.T) are removed, to prevent infinite class weights
@@ -31,7 +31,7 @@ git clone https://github.com/mahdihosseini/ADP.git
 
 ## Quick Start
 
-First, download the separate ADP database to a local directory (TODO: make this scriptable).
+First, download the separate ADP database to a local directory (TODO: make this scriptable). To access the database, please refer to http://www.dsp.utoronto.ca/projects/ADP/
 
 Then, open `demo_01_train.py`, then edit the value of `DATASET_DIR` to the location of that local directory.
 
