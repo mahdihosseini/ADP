@@ -1,3 +1,4 @@
+- [License](#license)
 - [Introduction](#introduction)
   * [ADP](#adp)
   * [Differences from CVPR Code](#differences-from-cvpr-code)
@@ -5,12 +6,14 @@
   * [Prerequisites](#prerequisites)
   * [Installing](#installing)
 - [Quick Start](#quick-start)
-- [License](#license)
 - [Citing](#citing)
 - [Acknowledgments](#acknowledgments)
 
+## License
+This project is protected under the EULA form you will sign during the registration from [ADP Website](http://www.dsp.utoronto.ca/projects/ADP/) to access the database. Use of this repository code or any biproduct (model weights, pre-trained architecture, etc) is strictly prohibited for any commercial use under the EULA agreement. 
+
 ## Introduction
-This repository contains the Keras implementation of Convolutional Neural Network (CNN) training on the Atlas of Digital Pathology (ADP)
+This repository contains the Keras implementation of Convolutional Neural Network (CNN) training on the Atlas of Digital Pathology (ADP) database. For more information and how to access the ADP database, please visit [Atlas Project](http://www.dsp.utoronto.ca/projects/ADP/).
 
 ### ADP
 
@@ -66,10 +69,6 @@ Next, run the demo script to train
 cd folder/to/clone-into
 python demo_train.py
 ```
-
-## License
-
-This project is protected under the EULA form you will sign during the registration from [ADP Website](http://www.dsp.utoronto.ca/projects/ADP/) to access the database. Use of this repository code or any biproduct (model weights, pre-trained architecture, etc) is strictly prohibited for any commercial use under the EULA agreement. 
 
 ## Citing ##
 ```text
