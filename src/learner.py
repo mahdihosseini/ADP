@@ -12,7 +12,7 @@ from keras import optimizers
 import openpyxl
 from openpyxl import load_workbook
 import numpy as np
-from clr_callback import *
+from src.clr_callback import *
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import roc_curve
@@ -21,8 +21,8 @@ import numpy as np
 import matplotlib.pylab as plt
 import matplotlib
 import time
-from model_loader import ModelLoader
-import htt_def
+from src.model_loader import ModelLoader
+import src.htt_def as htt_def
 import skimage
 
 class Learner:

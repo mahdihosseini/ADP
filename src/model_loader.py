@@ -1,13 +1,14 @@
 import keras
-import vggbuilder
-import resnetbuilder
-import histonetbuilder
-import xceptionbuilder
-import mobilenetbuilder
+import src.vggbuilder as vggbuilder
+import src.resnetbuilder as resnetbuilder
+import src.histonetbuilder as histonetbuilder
+import src.xceptionbuilder as xceptionbuilder
+import src.mobilenetbuilder as mobilenetbuilder
 from keras.applications import InceptionV3
 
 from keras.layers import Dropout, GlobalAveragePooling2D, Dense
 from keras import regularizers
+from keras.models import Model
 
 
 

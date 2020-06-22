@@ -1,8 +1,7 @@
 import pandas as pd
 
-import utilities
-
-from learner import Learner
+import src.utilities as utilities
+from src.learner import Learner
 
 DATASET_DIR = r'G:\database\adp-data\ADP V1.0 Release'
 
