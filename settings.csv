@@ -1,0 +1,4 @@
+Model type,Variant,Level,Dataset type,Micron Resolution,Downsampling Method,CLR,Colour Augmentation,Epoch
+HistoNet,Series-1.0,L3+,ADP-Release1-Flat,1,bicubic,TRUE,TRUE,100
+VGG,Default,L3+,ADP-Release1-Flat,1,bicubic,TRUE,TRUE,100
+ResNet,resnet_18,L3+,ADP-Release1-Flat,1,bicubic,TRUE,TRUE,100
