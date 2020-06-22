@@ -1,3 +1,14 @@
+- [ADP](#adp)
+  * [Differences from CVPR Code](#differences-from-cvpr-code)
+  * [Getting Started](#getting-started)
+    + [Prerequisites](#prerequisites)
+    + [Installing](#installing)
+  * [Quick Start](#quick-start)
+  * [License](#license)
+  * [Acknowledgments](#acknowledgments)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 # ADP
 
 Patch-level Annotated Database of Digital Pathology images for Histological Tissue Type (HTT) Classification, as presented by Hosseini *et al.*'s CVPR 2019 paper "Atlas of Digital Pathology: A Generalized Hierarchical Histological Tissue Type-Annotated Database for Deep Learning".
